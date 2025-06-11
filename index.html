@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Zeichensatz und Responsive Design -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Der Bund der fünf Hobbits</title>
+    <!-- Verknüpfung zur CSS-Datei -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <audio
+      id="shire-music"
+      src="music/middle-earth-fantasy-music-inspired-by-lord-of-the-rings-261464.mp3"
+      loop
+    ></audio>
+
+    <!-- Hintergrundbild für die Seite -->
+    <div class="lotr-background"></div>
+
+    <button id="toggle-music">🎵 Music on</button>
+    <!-- Überschrift -->
+    <h1>Der Bund der fünf Hobbits</h1>
+
+    <!-- Kurze Anleitung für die Bedienung -->
+    <ul>
+      <li>"Music on" spielt Hintergrundmusik</li>
+      <li>Neue Aufgabe eingeben, Hobbit wählen und auf "+" klicken</li>
+      <li>Klicke auf einen Hobbit, um nur seine Aufgaben zu sehen</li>
+      <li>"Done" markiert eine Aufgabe als erledigt, "Remove" löscht sie</li>
+      <li>"Delete all new tasks" löscht alle hinzugefügten Aufgaben</li>
+    </ul>
+
+    <!-- Eingabefeld und Buttons für neue Aufgaben und Reset -->
+    <div class="todo-controls">
+      <input
+        id="js-todo-create-text"
+        type="text"
+        placeholder="Aufgabe eingeben"
+      />
+      <button id="js-todo-create" type="button">+</button>
+    </div>
+
+    <!-- Buttons für die Auswahl der Hobbits -->
+    <div id="hobbit-buttons">
+      <button class="hobbit-btn" data-hobbit="Amro">⚔️ Amro</button>
+      <button class="hobbit-btn" data-hobbit="Ana">🌿 Ana</button>
+      <button class="hobbit-btn" data-hobbit="Christophe">🧭 Christophe</button>
+      <button class="hobbit-btn" data-hobbit="Jasmina">📚 Jasmina</button>
+      <button class="hobbit-btn" data-hobbit="Leona">🎶 Leona</button>
+    </div>
+
+    <!-- Liste der Aufgaben -->
+    <ul id="js-todo-entries"></ul>
+    <!-- Neuer Reset-Button am unteren Rand -->
+    <div id="reset-container">
+      <button id="js-todo-reset" type="button">Delete all new tasks</button>
+    </div>
+
+    <!-- Hobbit-Quiz -->
+    <div id="quiz-box">
+      <h2>🧠 Hobbit-Quiz</h2>
+      <p id="quiz-question">Frage wird geladen…</p>
+      <div class="quiz-answers" id="quiz-answers"></div>
+      <p id="quiz-feedback"></p>
+    </div>
+    <!-- Verknüpfung zur JavaScript-Datei -->
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,285 @@
+/* Grundlegendes Styling für den Body: 
+   - Hintergrundbild (Kachel)
+   - Hintergrundfarbe
+   - Schriftart und Farbe
+   - Innenabstand, maximale Breite, zentriert
+   - Rahmen und Schatten für einen "Fantasy-Rahmen" */
+body {
+  background: url("https://www.transparenttextures.com/patterns/old-mathematics.png");
+  background-color: #f8f4e3;
+  font-family: "Cinzel Decorative", serif;
+  color: #2e1b0e;
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+  border: 6px double #5c3a21;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #3c2f20;
+}
+
+/* Überschrift: zentriert, spezielle Farbe und Schatten für Fantasy-Effekt */
+h1 {
+  text-align: center;
+  color: #6b4f33;
+  text-shadow: 1px 1px 2px #bfa76a;
+}
+
+/* Standard-Listenstil mit Einzug */
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+/* Container für Eingabefeld und Buttons: 
+       - Flexbox für horizontale Anordnung
+       - Abstand zwischen den Elementen
+       - zentriert */
+.todo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  justify-content: center;
+}
+
+/* Eingabefeld für Aufgaben:
+       - Flexibel in der Breite
+       - Abgerundete Ecken, dezente Umrandung */
+input[type="text"] {
+  flex: 1 1 150px;
+  min-width: 0;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #c19a6b;
+}
+
+/* Buttons allgemein:
+       - Polsterung, Hintergrundfarbe, Schriftfarbe
+       - Keine Standardumrandung
+       - Abgerundete Ecken, fette Schrift
+       - Schatten für 3D-Effekt
+       - Übergang für sanfte Farbwechsel beim Hover */
+button {
+  padding: 0.5rem 1rem;
+  background-color: #5d442ad2;
+  color: #fdfaf5;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px #46331f;
+  transition: background-color 0.3s;
+}
+
+/* Hover-Effekt für Buttons und aktiven Hobbit-Button */
+button:hover,
+.hobbit-btn.active {
+  background-color: #a3790767;
+}
+
+/* Container für Hobbit-Auswahlbuttons:
+       - Abstand oben/unten
+       - Flexbox für horizontale Anordnung
+       - Abstand zwischen den Buttons
+       - zentriert */
+#hobbit-buttons {
+  margin: 10px 0;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Einzelne Hobbit-Buttons:
+       - Flexibel in der Breite, Mindestbreite */
+.hobbit-btn {
+  flex: 1 1 90px;
+  min-width: 90px;
+}
+
+/* Abstand über der Aufgabenliste */
+#js-todo-entries {
+  margin-top: 12px;
+}
+
+/* Einzelne Aufgaben (Listenelemente):
+       - Abstand unten, Polsterung
+       - Linker Rand als farbiger Balken
+       - Abgerundete Ecken, heller Hintergrund
+       - Flexbox für Anordnung von Text und Buttons */
+#js-todo-entries li {
+  margin-bottom: 8px;
+  padding: 6px;
+  border-left: 4px solid #c19a6b;
+  border-radius: 4px;
+  background: #f4ede3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Erledigte Aufgaben: durchgestrichen und ausgegraut */
+.done {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Animierter Hintergrund für die Seite:
+       - Fixiert, überdeckt die ganze Seite
+       - Animiert den Bildwechsel mit lotrCycle
+       - Transparenz und sanfter Übergang
+       - Keine Interaktion möglich (pointer-events: none) */
+.lotr-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-size: cover;
+  background-position: center top;
+  animation: lotrCycle 40s infinite;
+  opacity: 0.35;
+  transition: background-image 1s ease-in-out;
+  pointer-events: none;
+}
+
+/* Keyframes für den Bildwechsel im Hintergrund:
+       - Alle 40 Sekunden wird das Bild gewechselt
+       - Die Prozentwerte geben die Zeitpunkte für die jeweiligen Bilder an */
+@keyframes lotrCycle {
+  0% {
+    background-image: url("pics/hobbit1.jpg");
+  }
+  25% {
+    background-image: url("pics/hobbit2.jpeg");
+  }
+  50% {
+    background-image: url("pics/hobbit3.jpeg");
+  }
+  75% {
+    background-image: url("pics/hobbit4.jpeg");
+  }
+  100% {
+    background-image: url("pics/hobbit5.jpeg");
+  }
+}
+
+/* Reset-Button ganz unten, zentriert */
+#reset-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#js-todo-reset {
+  background-color: #b03c2f;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 2px 2px 5px #46331f;
+  transition: background-color 0.3s;
+}
+
+#js-todo-reset:hover {
+  background-color: #992d24;
+}
+
+#quiz-box {
+  background-color: #f4ede3;
+  border: 3px solid #c19a6b;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 2rem;
+  text-align: center;
+  box-shadow: 0 0 8px #aaa;
+}
+
+.quiz-answers button {
+  margin: 0.5rem;
+  padding: 0.6rem 1rem;
+  background-color: #6b4f33;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.quiz-answers button:hover {
+  background-color: #a3790767;
+}
+
+#quiz-feedback {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+/* Responsive Design für kleine Bildschirme */
+@media (max-width: 600px) {
+  /* Body passt sich der Bildschirmbreite an, größere Schrift */
+  body {
+    max-width: 100vw;
+    padding: 4vw 3vw;
+    font-size: 1.1em;
+    box-sizing: border-box;
+  }
+
+  /* Überschrift kleiner und kompakter */
+  h1 {
+    font-size: 1.5em;
+    line-height: 1.2;
+  }
+
+  /* Eingabefeld und Buttons werden untereinander angeordnet */
+  .todo-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  /* Eingabefeld und Buttons werden breiter und größer */
+  .todo-controls input[type="text"] {
+    width: 100%;
+    font-size: 1.1em;
+  }
+
+  .todo-controls button {
+    width: 100%;
+    font-size: 1.1em;
+    padding: 0.75rem;
+  }
+
+  /* Hobbit-Buttons untereinander und größer */
+  #hobbit-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .hobbit-btn {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1em;
+  }
+
+  /* Aufgabenliste: Listenelemente untereinander, mehr Abstand */
+  #js-todo-entries li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px;
+  }
+
+  /* Buttons in der Aufgabenliste werden breiter und größer */
+  #js-todo-entries li button {
+    width: 100%;
+    font-size: 1em;
+    padding: 0.6rem;
+  }
+
+  /* Hintergrundbild bleibt oben zentriert */
+  .lotr-background {
+    background-position: center top;
+  }
+}
