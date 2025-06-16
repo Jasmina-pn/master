@@ -1,122 +1,92 @@
-// Page (DOM) has finished loading:
 $(function () {
-  /* 1. API-KEY: START ----------------------------------------
-  - Purpose: Send the API key to authenticate with the Server
-      - Remark: Do not touch this
-  ------------------------------------------------------------- */
-
-  // 1.1. Send the API key with every jQuery AJAX-call:
   $.ajaxSetup({ headers: { "X-Auth-Token": "a534e63a0d68ad8ec00d" } });
 
-  /* API-KEY: END --------------------------------------------- */
+  // Fetch + Display Tweets
+  function fetchTweets(sort = "popular") {
+    $.getJSON(
+      `https://www.nafra.at/adad_st2025/project/?sort=${sort}`,
+      function (data) {
+        const container = $("#posts-container");
+        container.empty();
 
-  /* 2. FETCH TWEETS: START ------------------------------------
-      - Purpose: Fetch and display all posts from the server
-  - Task: Assignment #22 - Minimal requirements: Task #3
-  ------------------------------------------------------------- */
+        data.forEach((tweet) => {
+          const timeAgo = moment(tweet.created).fromNow();
 
-  // 2.1. Fetch the data from the server
-  // Hint: Within this task, you can easyly handle the task #1 of the challenge requirements by dynamically updating the filter parameter
-  // Hint: See the referencing example from our lecture: https://codesandbox.io/p/sandbox/referencing-4z7ltd/
-  var sort = "popular"; // Update this to "popular" to sort by popularity
-  $.getJSON(
-    "https://www.nafra.at/adad_st2025/project/?sort=" + sort,
-    function (data) {
-      // 2.2. Display the received data
-      // Hint: Iterate over the "data" object (using a loop - try the forEach) and return the posts back to the page
-      // Hint: See the templating example from our lecture: https://codesandbox.io/p/sandbox/templating-hn76s4/
+          const tweetHTML = `
+          <div class="col-12 col-md-6">
+            <div class="tweet-card" data-id="${tweet.id}">
+              <h5>${tweet.user}</h5>
+              <p>${tweet.text}</p>
+              <div class="timestamp">Tweeted ${timeAgo}</div>
+              <div class="tweet-footer">
+                <button class="btn btn-outline-success vote-btn" data-type="upvote">👍 ${tweet.upvotes}</button>
+                <button class="btn btn-outline-danger vote-btn" data-type="downvote">👎 ${tweet.downvotes}</button>
+                <button class="btn btn-outline-primary comment-toggle">💬 Comment</button>
+              </div>
+              <form class="create-comment-form mt-2 d-none">
+                <input type="text" name="user" placeholder="Your name" class="form-control mb-1" required />
+                <input type="text" name="text" placeholder="Write a comment..." class="form-control mb-1" required />
+                <button type="submit" class="btn btn-sm btn-dark">Submit Comment</button>
+              </form>
+            </div>
+          </div>
+        `;
+          container.append(tweetHTML);
+        });
+      }
+    );
+  }
 
-      // 2.3. Display the date in a different format (Challenge requirements: Task #3)
-      // Hint: You're allowed to use a plugin for this task
+  fetchTweets();
 
-      // This returns all posts as an object within the console - replace it with the logic to display the data (nicely) on the page
-      console.log(data);
-      // Example: Contains the user of the first entry
-      document.querySelector("#posts-container").textContent = data[0]["user"];
-      // data[0]['text'] contains the text of the first entry
-    }
-  );
+  // Handle Sort Selection
+  $("#sort-select").change(function () {
+    const sort = $(this).val();
+    fetchTweets(sort);
+  });
 
-  /* FETCH TWEETS: END ----------------------------------------- */
+  // Handle Create Tweet
+  $("#create-note-form").submit(function (e) {
+    e.preventDefault();
+    const formData = $(this).serialize();
 
-  /* 3. VOTE TWEETS: START ------------------------------------
-      - Purpose: Vote on a note
-  - Task: Assignment #22 - Minimal requirements: Task #4
-  ------------------------------------------------------------ */
+    $.post("https://www.nafra.at/adad_st2025/project/", formData, function () {
+      fetchTweets();
+      $("#create-note-form")[0].reset();
+    });
+  });
 
-  // 3.1. Vote button was pressed:
-  // Hint: Execute the (folowing) "vote on a note" functionality whenever a "vote"-button is pressed
+  // Handle Voting
+  $(document).on("click", ".vote-btn", function () {
+    const tweetID = $(this).closest(".tweet-card").data("id");
+    const voteType = $(this).data("type");
 
-  // 3.2. Increase the "vote"-counter on the server
-  // Hint: You need to replace the contents of the variable "tweetID" with the ID of the note on which the button was pressed
-  // Hint: See the referencing example from our lecture: https://codesandbox.io/p/sandbox/referencing-4z7ltd/
-  // var tweetID = pressedelement.target.dataset.tweetID; // Example on how to get an ID (depending on your code)
-  var tweetID = 1; // Example on how to get an ID (depending on your code)
-  var voteType = "upvote"; // Update this to "downvote" to downvote the post
-  $.get(
-    "https://www.nafra.at/adad_st2025/project/" + tweetID + "?type=" + voteType,
-    function (data) {
-      // 3.3. Return and display the new amount of votes
-    }
-  );
+    $.get(
+      `https://www.nafra.at/adad_st2025/project/${tweetID}?type=${voteType}`,
+      function () {
+        fetchTweets(); // or update only that tweet
+      }
+    );
+  });
 
-  /* VOTE TWEETS: END ----------------------------------------- */
+  // Toggle comment form
+  $(document).on("click", ".comment-toggle", function () {
+    $(this).siblings(".create-comment-form").toggleClass("d-none");
+  });
 
-  /* 4. CREATE TWEETS: START ------------------------------------
-      - Purpose: Create a note
-  - Task: Assignment #22 - Minimal requirements: Task #5
-  -------------------------------------------------------------- */
+  // Handle Comment Submission
+  $(document).on("submit", ".create-comment-form", function (e) {
+    e.preventDefault();
+    const form = $(this);
+    const tweetID = form.closest(".tweet-card").data("id");
+    const formData = form.serialize();
 
-  // 4.1. The "create note"-form was submitted
-  // Hint: Execute the "create a note" logic (below) whenever the "create note"-form was submitted
-  // Hint: Don't forget to prevent the form from submitting (forcing a refresh) - event.preventDefault();
-  // Hint: Check if the form was completed (no fields are empty)
-
-  // 4.2. Send a note (completed form) to the server
-  // Hint: You need to replace the contents of the variable "formData" with the data of the form
-  var formData = $("#create-note-form").serialize(); // Example on how to get the form data using jQuery (depending on your code)
-  $.post(
-    "https://www.nafra.at/adad_st2025/project/",
-    formData,
-    function (response) {
-      // 4.3. Return and display the new note
-    }
-  );
-
-  /* CREATE TWEETS: END ----------------------------------------- */
-
-  /* 5. CREATE COMMENTS: START ------------------------------------
-      - Purpose: Comment on a note
-  - Task: Assignment #22 - Challenge requirements: Task #2
-  ----------------------------------------------------------------- */
-
-  // 5.1. The "create comment"-form was submitted
-  // Hint: Execute the "create a comment" logic (below) whenever the "create comment"-form was submitted
-  // Hint: Don't forget to prevent the form from submitting (forcing a refresh) - event.preventDefault();
-  // Hint: Check if the form was completed (no fields are empty)
-
-  // 5.2. Send a comment (completed form) to the server
-  // Hint: You need to replace the variable "tweetID" with the ID of the note that should be commented
-  // var tweetID = pressedelement.target.dataset.tweetID; // Example on how to get an ID (depending on your code)
-  var tweetID = 1; // Example on how to get an ID (depending on your code)
-  // Hint: You need to replace the contents of the variable "formData" with the data of the form
-  var formData = $(".create-comment-form").serialize(); // Example on how to get the form data using jQuery (depending on your code)
-  $.post(
-    "https://www.nafra.at/adad_st2025/project/" + tweetID,
-    formData,
-    function (response) {
-      // 5.3. Return and display the new comment
-    }
-  );
-
-  /* CREATE COMMENTS: END ----------------------------------------- */
-
-  /* 6. YOUR OWN IDEAS: START ------------------------------------
-      - Purpose: Your own purpose
-  - Task: Assignment #22 - Challenge requirements: Task #4
-  ---------------------------------------------------------------- */
-
-  // Hint: Be creative :-)
-
-  /* YOUR OWN IDEAS: END ----------------------------------------- */
+    $.post(
+      `https://www.nafra.at/adad_st2025/project/${tweetID}`,
+      formData,
+      function () {
+        fetchTweets(); // reload after comment
+      }
+    );
+  });
 });

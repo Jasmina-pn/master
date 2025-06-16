@@ -1,0 +1,39 @@
+body {
+  background: #fdf6e3;
+  font-family: "Georgia", serif;
+  color: #2e2e2e;
+}
+
+.lotr-header {
+  font-family: "Ringbearer", serif;
+  font-size: 3rem;
+  color: #826644;
+  text-shadow: 1px 1px 1px #000;
+}
+
+/* Optional: Custom LOTR font */
+@font-face {
+  font-family: "Ringbearer";
+  src: url("https://fonts.cdnfonts.com/s/9073/Ringbearer.woff") format("woff");
+}
+
+.tweet-card {
+  background: #fff8e1;
+  border: 2px solid #d4af37;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.tweet-footer {
+  margin-top: 10px;
+}
+
+.tweet-footer button {
+  margin-right: 10px;
+}
+
+.timestamp {
+  font-size: 0.8rem;
+  color: #555;
+}
